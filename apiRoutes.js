@@ -33,36 +33,9 @@ module.exports = function (app) {
         writeDb();
         console.log("You deleted the note with id " + req.params.id);
     });
+
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+// This was my previous code that did not work. i did a lot of edits and could not get the notes to be displayed onto the main page.
 
 
 // const fs = require("fs");
