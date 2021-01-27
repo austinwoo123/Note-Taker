@@ -16,6 +16,7 @@ module.exports = function (app) {
             return JSON.parse(data);
         });
     }
+
     // create get route for /api/notes
     app.get("/api/notes", function (req, res) {
         // console.log("hello world!")
@@ -61,7 +62,28 @@ module.exports = function (app) {
         addnote(req.body)
         res.json(createNote)
     }
-        // function addNote(note) {
+
+
+
+
+
+        app.delete("/api/notes/:id", function (req, res) {
+        notes.splice(req.params.id, 1);
+        writeDb();
+        console.log("You deleted the note with id " + req.params.id);
+    })
+
+
+
+
+
+}
+
+
+
+
+
+// function addNote(note) {
         //     const newNote = { title, text, id: uuidv1() };
         // }
 
@@ -88,46 +110,22 @@ module.exports = function (app) {
         //     })
         // }
 
-        app.delete("/api/notes/:id", function (req, res) {
-        notes.splice(req.params.id, 1);
-        writeDb();
-        console.log("You deleted the note with id " + req.params.id);
-    });
+
+ // addNote(note) {
+        //     const { title, text } = note;
+        //     if (!title || !text) {
+        //       throw new _Error_(“Note ‘title’ and ‘text’ cannot be blank”);
+        //     }
+        //     // Add a unique id to the note using uuid package
+        //     const newNote = { title, text, id: uuidv1() };
+        //     // Get all notes, add the new note, write all the updated notes, return the newNote
+        //     return this.getNotes()
+        //       .then((notes) => [...notes, newNote])
+        //       .then((updatedNotes) => this.write(updatedNotes))
+        //       .then(() => newNote);
+        //   }
 
 
 
-
-    // addNote(note) {
-    //     const { title, text } = note;
-    //     if (!title || !text) {
-    //       throw new _Error_(“Note ‘title’ and ‘text’ cannot be blank”);
-    //     }
-    //     // Add a unique id to the note using uuid package
-    //     const newNote = { title, text, id: uuidv1() };
-    //     // Get all notes, add the new note, write all the updated notes, return the newNote
-    //     return this.getNotes()
-    //       .then((notes) => [...notes, newNote])
-    //       .then((updatedNotes) => this.write(updatedNotes))
-    //       .then(() => newNote);
-    //   }
-
-
-
-
-
-    //  11:32
+//  11:32
     //  that is the complete function.  You will have to figure out where to put it.
-
-
-}
-
-
-
-
-
-
-
-
-
-
-

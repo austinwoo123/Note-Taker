@@ -14,7 +14,7 @@ I had to create an application that can be used to write, save, and delete notes
 9. [Acknowledgements](#acknowledgements)
 
 ## Screenshot
-
+![Alt Text](https://raw.githubusercontent.com/austinwoo123/Note-Taker/main/notes.png)
 
 ## Installation
 1. Clone from GitHub
