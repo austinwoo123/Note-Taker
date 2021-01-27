@@ -6,14 +6,16 @@ const fs = require("fs");
 
 module.exports = function (app) {
     //readfile to setup notes variable
-
-    fs.readFile("db/db.json", 'utf8', (err, data) => {
-        if (err) throw err;
-        let notes = JSON.parse(data);
-    });
+    function getNotes() {
+        fs.readFile("db/db.json", 'utf8', (err, data) => {
+            if (err) throw err;
+            return JSON.parse(data);
+        });
+    }
     // create get route for /api/notes
     app.get("/api/notes", function (req, res) {
-        console.log("hello world!")
+        // console.log("hello world!")
+        let notes = getNotes();
         res.json(notes);
     });
     // Create post route for /api/notes 
