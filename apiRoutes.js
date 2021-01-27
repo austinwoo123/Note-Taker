@@ -20,8 +20,24 @@ module.exports = function (app) {
         app.post("/api/notes", function (req, res) {
             let createNote = req.body;
             notes.push(createNote);
+            writeDb()
             return console.log("New note added: " + createNote.title)
         });
+        //function that upddates the db.json file when there is a new note. 
+        function writeDb() {
+            fs.writeFile("db/db.json", JSON.stringify(notes, '\n'), err => {
+                if (err) throw err;
+                return true;
+            })
+        }
+
+        app.get("/api/notes/:id", function (req, res) {
+            res.json(notes[req.params.id]);
+        });
+
+
+
+
 
 
 
