@@ -1,5 +1,7 @@
 const fs = require("fs");
-
+const path = require('path');
+const notes = require('./db/db.json');
+console.log("notes: ", notes);
 
 // fs.writeFile
 
@@ -22,19 +24,27 @@ module.exports = function (app) {
     app.post("/api/notes", function (req, res) {
         let createNote = req.body;
         notes.push(createNote);
-        writeDb()
-        return console.log("New note added: " + createNote.title)
+        writeDb();
+        return console.log("New note added: " + createNote.title);
     });
-    //function that upddates the db.json file when there is a new note. 
+    //function that updates the db.json file when there is a new note. 
     function writeDb() {
-        fs.writeFile("db/db.json", JSON.stringify(notes, '\n'), err => {
+        getNotes();
+        fs.writeFile("db/db.json", JSON.stringify(notes, '\t'), err => {
             if (err) throw err;
             return true;
         })
     }
 
     app.get("/api/notes/:id", function (req, res) {
+        getNotes();
         res.json(notes[req.params.id]);
+    });
+
+    app.delete("/api/notes/:id", function (req, res) {
+        notes.splice(req.params.id, 1);
+        writeDb();
+        console.log("You deleted the note with id " + req.params.id);
     });
 
 
