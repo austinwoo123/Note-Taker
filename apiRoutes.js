@@ -1,76 +1,143 @@
 const fs = require("fs");
 const path = require('path');
 const notes = require('./db/db.json');
-
 // console.log("notes: ", notes);
 
 // fs.writeFile
 
 module.exports = function (app) {
+    app.post("/api/notes", function (req, res) {
+        let createNote = req.body;
+        notes.push(createNote);
+        writeDb()
+        return console.log("New note added: " + createNote.title)
 
-    //readfile to setup notes variable
-
-    // create get route for /api/notes
-    app.get("/api/notes", function (req, res) {
-        // console.log("hello world!")
-
-        let notes = getNotes();
-        res.json(notes);
     });
+
+    //function that updates the db.json file when there is a new note. 
+    function writeDb() {
+        fs.writeFile("db/db.json", JSON.stringify(notes, '\n'), err => {
+
+            if (err) throw err;
+            return true;
+        })
+    }
 
     app.get("/api/notes/:id", function (req, res) {
-        // getNotes();
+
         res.json(notes[req.params.id]);
+    })
+
+    app.delete("/api/notes/:id", function (req, res) {
+        notes.splice(req.params.id, 1);
+        writeDb();
+        console.log("You deleted the note with id " + req.params.id);
     });
+}
 
-    // Create post route for /api/notes 
-    app.post("/api/notes", function (req, res) {
-        notesId = notes.length + 1;
-        // fs.readFile("/db/db.json", JSON.parse (res), function (err,data){
-        //     if (err) throw err;
-        //     var dbNotes= JSON.parse(data);
-        //     var noteArray = [];
 
-        // })
-        let createNote = req.body;
-        if (notes.length === 0) {
-            createNote.id = 1;
-        } else {
-            createNote.id = (notes[notes.length - 1].id + 1);
-        }
 
-        // let noteId =
-        // notes.push(createNote);
-        // for (let i = 0; i < db.length; i++) {
-        //     const newNote = {
-        //         title: db[i].title,
-        //         text: db[i].text,
-        //         id: i
-        //     };
-        // }
 
-        newNoteList.push(newNote);
-        // writeDb();
-        fs.writeFile("./db/db.json", JSON.stringify(notes, '\t'), err => {
-            if (err) throw err;
-        }),
-            addnote(req.body);
-        res.json(createNote);
-    }),
 
-        app.delete("/api/notes/:id", function (req, res) {
-            notes.splice(req.params.id, 1);
-            writeDb();
-            console.log("You deleted the note with id " + req.params.id);
-        })
-},
 
-    function getNotes() {
-        fs.readFile("./db/db.json", 'utf8', (err, data) => {
-            if (err) throw err;
-            return JSON.parse(data);
-        });
-    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// const fs = require("fs");
+// const path = require('path');
+// const notes = require('./db/db.json');
+
+// // console.log("notes: ", notes);
+
+// // fs.writeFile
+
+// module.exports = function (app) {
+
+//     //readfile to setup notes variable
+//     function getNotes() {
+//         fs.readFile("./db/db.json", 'utf8', (err, data) => {
+//             if (err) throw err;
+//             return JSON.parse(data);
+//         });
+//     }
+
+//     // create get route for /api/notes
+//     app.get("/api/notes", function (req, res) {
+//         // console.log("hello world!")
+
+//         let notes = getNotes();
+//         res.json(notes);
+//     });
+
+//     app.get("/api/notes/:id", function (req, res) {
+//         // getNotes();
+//         res.json(notes[req.params.id]);
+//     });
+
+//     // Create post route for /api/notes 
+//     app.post("/api/notes", function (req, res) {
+//         notesId = notes.length + 1;
+//         // fs.readFile("/db/db.json", JSON.parse (res), function (err,data){
+//         //     if (err) throw err;
+//         //     var dbNotes= JSON.parse(data);
+//         //     var noteArray = [];
+
+//         // })
+//         let createNote = req.body;
+//         if (notes.length === 0) {
+//             createNote.id = 1;
+//         } else {
+//             createNote.id = (notes[notes.length - 1].id + 1);
+//         }
+
+//         // let noteId =
+//         // notes.push(createNote);
+//         // for (let i = 0; i < db.length; i++) {
+//         //     const newNote = {
+//         //         title: db[i].title,
+//         //         text: db[i].text,
+//         //         id: i
+//         //     };
+//         // }
+
+//         newNoteList.push(newNote);
+//         // writeDb();
+//         fs.writeFile("./db/db.json", JSON.stringify(notes, '\t'), err => {
+//             if (err) throw err;
+//         }),
+//             addnote(req.body);
+//         res.json(createNote);
+//     }),
+
+//         app.delete("/api/notes/:id", function (req, res) {
+//             notes.splice(req.params.id, 1);
+//             writeDb();
+//             console.log("You deleted the note with id " + req.params.id);
+//         })
+// }
+
 
 
 
