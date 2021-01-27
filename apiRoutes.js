@@ -6,16 +6,9 @@ const notes = require('./db/db.json');
 
 // fs.writeFile
 
-
 module.exports = function (app) {
 
     //readfile to setup notes variable
-    function getNotes() {
-        fs.readFile("./db/db.json", 'utf8', (err, data) => {
-            if (err) throw err;
-            return JSON.parse(data);
-        });
-    }
 
     // create get route for /api/notes
     app.get("/api/notes", function (req, res) {
@@ -29,9 +22,10 @@ module.exports = function (app) {
         // getNotes();
         res.json(notes[req.params.id]);
     });
+
     // Create post route for /api/notes 
     app.post("/api/notes", function (req, res) {
-        notesId = notes.length + 1
+        notesId = notes.length + 1;
         // fs.readFile("/db/db.json", JSON.parse (res), function (err,data){
         //     if (err) throw err;
         //     var dbNotes= JSON.parse(data);
@@ -40,12 +34,13 @@ module.exports = function (app) {
         // })
         let createNote = req.body;
         if (notes.length === 0) {
-            createNote.id = 1
+            createNote.id = 1;
         } else {
             createNote.id = (notes[notes.length - 1].id + 1);
         }
+
         // let noteId =
-        notes.push(createNote);
+        // notes.push(createNote);
         // for (let i = 0; i < db.length; i++) {
         //     const newNote = {
         //         title: db[i].title,
@@ -58,26 +53,29 @@ module.exports = function (app) {
         // writeDb();
         fs.writeFile("./db/db.json", JSON.stringify(notes, '\t'), err => {
             if (err) throw err;
+        }),
+            addnote(req.body);
+        res.json(createNote);
+    }),
+
+        app.delete("/api/notes/:id", function (req, res) {
+            notes.splice(req.params.id, 1);
+            writeDb();
+            console.log("You deleted the note with id " + req.params.id);
         })
-        addnote(req.body)
-        res.json(createNote)
+},
+
+    function getNotes() {
+        fs.readFile("./db/db.json", 'utf8', (err, data) => {
+            if (err) throw err;
+            return JSON.parse(data);
+        });
     }
 
 
 
 
 
-        app.delete("/api/notes/:id", function (req, res) {
-        notes.splice(req.params.id, 1);
-        writeDb();
-        console.log("You deleted the note with id " + req.params.id);
-    })
-
-
-
-
-
-}
 
 
 
