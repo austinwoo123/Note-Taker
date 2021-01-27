@@ -9,7 +9,7 @@ module.exports = function (app) {
 
     fs.readFile("db/db.json", 'utf8', (err, data) => {
         if (err) throw err;
-        var notes = JSON.parse(data);
+        let notes = JSON.parse(data);
 
         // create get route for /api/notes
         app.get("/api/notes", function (req, res) {
@@ -22,6 +22,8 @@ module.exports = function (app) {
             notes.push(createNote);
             return console.log("New note added: " + createNote.title)
         });
+
+
 
 
 

@@ -10,6 +10,7 @@ const PORT = process.env.port || 8080;
 //Sets up the Express app to handle data parsing or the middleland
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
+app.use(express.static('public'));
 
 
 
