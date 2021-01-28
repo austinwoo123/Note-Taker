@@ -6,22 +6,44 @@ const notes = require('./db/db.json');
 // fs.writeFile
 
 module.exports = function (app) {
+
+    // create get route for /api/notes
+    app.get("/api/notes", function (req, res) {
+        // console.log("hello world!")
+        fs.readFile("./db/db.json", 'utf8', (err, data) => {
+            if (err) throw err;
+            let notes = JSON.parse(data);
+            console.log(notes)
+            res.json(notes);
+        });
+
+    });
+
     app.post("/api/notes", function (req, res) {
         let createNote = req.body;
-        notes.push(createNote);
-        writeDb()
-        return console.log("New note added: " + createNote.title)
+        fs.readFile("./db/db.json", 'utf8', (err, data) => {
+            if (err) throw err;
+            let notes = JSON.parse(data);
+            console.log(notes);
+            notes.push(createNote);
+
+            fs.writeFile("./db/db.json", JSON.stringify(notes), err => {
+                if (err) throw err;
+                res.json(true)
+            })
+        });
+
 
     });
 
     //function that updates the db.json file when there is a new note. 
-    function writeDb() {
-        fs.writeFile("db/db.json", JSON.stringify(notes, '\n'), err => {
 
-            if (err) throw err;
-            return true;
-        })
-    }
+    //  fs.writeFile("db/db.json", JSON.stringify(notes), err => {
+
+    //         if (err) throw err;
+    //         return true;
+    //     })
+
 
     app.get("/api/notes/:id", function (req, res) {
 
@@ -30,7 +52,6 @@ module.exports = function (app) {
 
     app.delete("/api/notes/:id", function (req, res) {
         notes.splice(req.params.id, 1);
-        writeDb();
         console.log("You deleted the note with id " + req.params.id);
     });
 
@@ -48,21 +69,21 @@ module.exports = function (app) {
 
 // module.exports = function (app) {
 
-//     //readfile to setup notes variable
-//     function getNotes() {
-//         fs.readFile("./db/db.json", 'utf8', (err, data) => {
-//             if (err) throw err;
-//             return JSON.parse(data);
-//         });
-//     }
-
-//     // create get route for /api/notes
-//     app.get("/api/notes", function (req, res) {
-//         // console.log("hello world!")
-
-//         let notes = getNotes();
-//         res.json(notes);
+//readfile to setup notes variable
+// function getNotes() {
+//     fs.readFile("./db/db.json", 'utf8', (err, data) => {
+//         if (err) throw err;
+//         return JSON.parse(data);
 //     });
+// }
+
+// create get route for /api/notes
+// app.get("/api/notes", function (req, res) {
+//     // console.log("hello world!")
+
+//     let notes = getNotes();
+//     res.json(notes);
+// });
 
 //     app.get("/api/notes/:id", function (req, res) {
 //         // getNotes();
@@ -97,9 +118,7 @@ module.exports = function (app) {
 
 //         newNoteList.push(newNote);
 //         // writeDb();
-//         fs.writeFile("./db/db.json", JSON.stringify(notes, '\t'), err => {
-//             if (err) throw err;
-//         }),
+
 //             addnote(req.body);
 //         res.json(createNote);
 //     }),
