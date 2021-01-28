@@ -13,7 +13,7 @@ module.exports = function (app) {
         fs.readFile("./db/db.json", 'utf8', (err, data) => {
             if (err) throw err;
             let notes = JSON.parse(data);
-            console.log(notes)
+            // console.log(notes)
             res.json(notes);
         });
 
@@ -21,10 +21,11 @@ module.exports = function (app) {
 
     app.post("/api/notes", function (req, res) {
         let createNote = req.body;
+        createNote.id = Date.now()
         fs.readFile("./db/db.json", 'utf8', (err, data) => {
             if (err) throw err;
             let notes = JSON.parse(data);
-            console.log(notes);
+            // console.log(notes);
             notes.push(createNote);
 
             fs.writeFile("./db/db.json", JSON.stringify(notes), err => {
@@ -46,7 +47,7 @@ module.exports = function (app) {
 
 
     app.get("/api/notes/:id", function (req, res) {
-
+        console.log(req.params);
         res.json(notes[req.params.id]);
     })
 
